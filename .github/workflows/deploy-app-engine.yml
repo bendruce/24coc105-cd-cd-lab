@@ -36,7 +36,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.13" 
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
@@ -55,6 +55,11 @@ jobs:
         with:
           # Task 3: Use the GitHub secret for service account JSON key
           credentials_json: ${{ secrets.GAE_SA_KEY }}
+
+      - name: Ensure App Engine is initialized
+        run: |
+          gcloud app describe --project ${{ secrets.GCP_PROJECT_ID }} || \
+          gcloud app create --project ${{ secrets.GCP_PROJECT_ID }} --region=us-central
 
       - name: Deploy to App Engine
         run: |
